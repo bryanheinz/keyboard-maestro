@@ -14,5 +14,5 @@ if [[ -d /usr/local/keyboard-maestro ]]; then
 else
     cd /usr/local/
     sudo git clone https://github.com/bryanheinz/keyboard-maestro
-    chown -R $theUser /usr/local/keyboard-maestro
+    sudo chown -R $theUser /usr/local/keyboard-maestro
 fi

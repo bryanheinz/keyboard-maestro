@@ -13,7 +13,7 @@ def logd(msg):
     syslog.syslog(syslog.LOG_ALERT, "[km] {}".format(msg))
 
 def main(selection):
-    txt = "<!-- wp:enlighter/codeblock -->\n<pre class="EnlighterJSRAW" data-enlighter-language="generic" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">{}</pre>\n<!-- /wp:enlighter/codeblock -->"
+    txt = """<!-- wp:enlighter/codeblock -->\n<pre class="EnlighterJSRAW" data-enlighter-language="generic" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">{}</pre>\n<!-- /wp:enlighter/codeblock -->""".format(selection)
     print(txt)
 
 selection = stdin.read()

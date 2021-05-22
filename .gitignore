@@ -5,3 +5,4 @@ __pycache__
 Podfile.lock
 Pods
 *.xcworkspace
+text-manipulation/generic.py

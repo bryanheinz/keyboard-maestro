@@ -1,6 +1,8 @@
 #!/bin/zsh
 
 baseDir=$(dirname "$0")
+cd $baseDir
+baseDir=$(pwd)
 kmDir="/usr/local/keyboard-maestro"
 theUser=$(/usr/bin/stat -f "%Su" /dev/console)
 

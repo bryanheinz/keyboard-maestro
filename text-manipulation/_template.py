@@ -10,16 +10,16 @@ from sys import stdin
 
 
 def logd(msg):
-    syslog.syslog(syslog.LOG_ALERT, "[km] {}".format(msg))
+    syslog.syslog(syslog.LOG_ALERT, f"[km] {msg}")
 
-def main(selection):
+def main():
     # manipulate text
-    print(selection)
+    print(SELECTION)
 
-selection = stdin.read()
+SELECTION = stdin.read()
 
 try:
-    main(selection)
+    main()
 except Exception as e:
     logd(e)
     exit(1)

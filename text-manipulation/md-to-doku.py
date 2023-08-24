@@ -10,9 +10,9 @@ import re
 import subprocess
 from sys import stdin
 
-COMMENT_ESC = "<.>>__<<.>"
-AST_ESC = "<.>>|||<<.>"
-SLASH_ESC = "<.>>~~~<<.>"
+COMMENT_ESC = "<>>@@@<<>"
+AST_ESC = "<>>|||<<>"
+SLASH_ESC = "<>>~~~<<>"
 
 
 def pbcopy(txt):
@@ -42,7 +42,7 @@ def convert_code_block(match_obj):
 def convert_inline_code(match_obj):
     if match_obj.group(0).startswith(COMMENT_ESC):
         return match_obj.group(0)
-    return f"''{match_obj.group(1)}''"
+    return f"{match_obj.group(1)} ''{match_obj.group(2)}'' {match_obj.group(3)}"
 
 def convert_bold_italic(match_obj):
     return f"{AST_ESC}{AST_ESC}{SLASH_ESC}{SLASH_ESC}{match_obj.group(1)}{SLASH_ESC}{SLASH_ESC}{AST_ESC}{AST_ESC}"
@@ -77,10 +77,7 @@ MD_DOC = re.sub(r"```(\w*)((.|\n)+?)```", convert_code_block, MD_DOC, flags=re.M
 MD_DOC = re.sub(r"(^#+) (.+)", convert_header, MD_DOC, flags=re.M)
 
 # convert inline code
-MD_DOC = re.sub(r".*`(.+?)`.*", convert_inline_code, MD_DOC)
-
-# convert escaped comment # back to #
-MD_DOC = MD_DOC.replace(COMMENT_ESC, '#')
+MD_DOC = re.sub(r"(.*)`(.+?)`(.*)", convert_inline_code, MD_DOC)
 
 # convert bold-italic
 MD_DOC = re.sub(r"\*{3}(.+?)\*{3}", convert_bold_italic, MD_DOC, flags=re.M|re.S)
@@ -89,16 +86,20 @@ MD_DOC = re.sub(r"\*{3}(.+?)\*{3}", convert_bold_italic, MD_DOC, flags=re.M|re.S
 MD_DOC = re.sub(r"\*{2}(.+?)\*{2}", esc_bold, MD_DOC, flags=re.M|re.S)
 
 # convert italics
-MD_DOC = re.sub(r"\*{2}(.+?)\*{2}", convert_italic, MD_DOC, flags=re.M|re.S)
-
-# unescape bold and italics
-MD_DOC = MD_DOC.replace(AST_ESC, "*")
-MD_DOC = MD_DOC.replace(SLASH_ESC, "/")
+MD_DOC = re.sub(r"\*{1}(.+?)\*{1}", convert_italic, MD_DOC, flags=re.M|re.S)
 
 # convert links – [[link|text]]
 MD_DOC = re.sub(r"\[(.*)\]\((.*)\)", convert_links, MD_DOC, flags=re.M)
 
 # convert lists (- and *)
 MD_DOC = re.sub(r"^ *- ", convert_lists, MD_DOC, flags=re.M)
+MD_DOC = re.sub(r"^ *\* ", convert_lists, MD_DOC, flags=re.M)
+
+# convert escaped comment # back to #
+MD_DOC = MD_DOC.replace(COMMENT_ESC, '#')
+
+# unescape bold and italics
+MD_DOC = MD_DOC.replace(AST_ESC, "*")
+MD_DOC = MD_DOC.replace(SLASH_ESC, "/")
 
 pbcopy(MD_DOC)

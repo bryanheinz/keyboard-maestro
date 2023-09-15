@@ -144,7 +144,7 @@ MD_DOC = re.sub(r"\*{2}(.+?)\*{2}", esc_bold, MD_DOC, flags=re.M|re.S)
 MD_DOC = re.sub(r"\*{1}(.+?)\*{1}", convert_italic, MD_DOC, flags=re.M|re.S)
 
 # convert links – [[link|text]]
-MD_DOC = re.sub(r"\[(.*)\]\((.*)\)", convert_links, MD_DOC, flags=re.M)
+MD_DOC = re.sub(r"\[(.+?)\]\((.+?)\)", convert_links, MD_DOC, flags=re.M)
 
 # convert lists (- and *)
 MD_DOC = re.sub(r"^ *- ", convert_lists, MD_DOC, flags=re.M)
